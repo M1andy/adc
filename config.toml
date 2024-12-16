@@ -1,0 +1,31 @@
+[main]
+# current support mode is only "fetch"
+mode = "organize"
+
+# source_directory is the root directory where adc will search recursively
+source_directory = "F:/Download/JAV/JAV_testout"
+
+# succss_output_directory is the root directory where adc while organize all the jav
+success_output_directory = "F:/Download/JAV/JAV_output"
+
+# IMPORTANT
+# proxy is a must option!
+[proxy]
+enabled = true
+url = "http://127.0.0.1:7890"
+timeout = 30
+retry = 3
+
+# TODO: not supported yet
+[rename_rule]
+location_rule = ""
+file_rule = ""
+rename_img_with_number = true
+
+[logger_options]
+
+# log level options: dev debug info warn
+level = "info"
+
+# log file location
+log_path = "./adc_log"
