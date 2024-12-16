@@ -36,8 +36,14 @@ func Execute() error {
 }
 
 func main(cmd *cobra.Command) {
-	SetupConfig()
-	SetupLogger()
+	if err := SetupConfig(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	if err := SetupLogger(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 
 	isWatchDogMode, _ := cmd.Root().PersistentFlags().GetBool("watch")
 	if !isWatchDogMode {

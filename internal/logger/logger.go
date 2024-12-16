@@ -33,7 +33,7 @@ func (l *CrawlLogger) Event(e *debug.Event) {
 	l.logger.Debugf("[%06d] | Clter: [%d] | Req: %d | Type: %s | %q", i, e.CollectorID, e.RequestID, e.Type, e.Values)
 }
 
-func SetupLogger() {
+func SetupLogger() error {
 	// init new logger
 	cfg := AdcConfig
 	Logger = logrus.New()
@@ -52,6 +52,7 @@ func SetupLogger() {
 	case "warn":
 		logLevel = logrus.WarnLevel
 	default:
+		fmt.Printf("Unknown log level: %s, using default log level info.\n", level)
 		logLevel = logrus.InfoLevel
 	}
 	// set log level
@@ -65,21 +66,22 @@ func SetupLogger() {
 	})
 
 	// set log writers
-	// TODO: remove log file writer color output
 	var writers []io.Writer
+	writers = append(writers, os.Stdout)
+
 	file, err := os.OpenFile(
 		fmt.Sprintf("%s", logPath),
 		os.O_CREATE|os.O_WRONLY|os.O_APPEND,
-		0666)
+		0644)
 	if err != nil {
-		fmt.Printf("Create log file error: %v\nExpected log file path: %s\n", err, logPath)
-		writers = append(writers, os.Stdout)
+		fmt.Fprintf(os.Stderr, "Failed to open log file: %s\n", err)
 	} else {
-		writers = append(writers, os.Stdout)
 		writers = append(writers, file)
 	}
 	fileAndStdoutWriter := io.MultiWriter(writers...)
 	Logger.SetOutput(fileAndStdoutWriter)
+
+	return nil
 }
 
 func init() {
