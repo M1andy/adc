@@ -124,7 +124,7 @@ func (c *JavbusCrawler) Init() {
 
 		// update outPath
 		outPath := AdcConfig.SuccessOutputDirectory
-		actress, err := parseActressesList(c.info.Actresses, -1)
+		actress, err := parseActressesList(c.info.Actresses)
 		if err != nil {
 			javLogger.Warnln(err)
 			actress = "未知演员"
@@ -174,7 +174,7 @@ func splitEmptySepStrings(s string) []string {
 	return actors
 }
 
-func parseActressesList(actresses []string, maxLen int) (string, error) {
+func parseActressesList(actresses []string) (string, error) {
 	if len(actresses) == 0 {
 		return "", fmt.Errorf("actress not found")
 	}
@@ -183,11 +183,7 @@ func parseActressesList(actresses []string, maxLen int) (string, error) {
 		return actresses[0], nil
 	}
 
-	if maxLen == -1 {
-		maxLen = min(4, len(actresses))
-	} else {
-		maxLen = min(maxLen, len(actresses))
-	}
+	maxLen := min(3, len(actresses))
 
-	return str.Join(actresses[0:maxLen-1], ","), nil
+	return str.Join(actresses[:maxLen], ","), nil
 }
