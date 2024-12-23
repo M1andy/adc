@@ -33,9 +33,8 @@ func (l *CrawlLogger) Event(e *debug.Event) {
 	l.logger.Debugf("[%06d] | Clter: [%d] | Req: %d | Type: %s | %q", i, e.CollectorID, e.RequestID, e.Type, e.Values)
 }
 
-func SetupLogger() error {
+func SetupLogger(cfg *Config) error {
 	// init new logger
-	cfg := AdcConfig
 	Logger = logrus.New()
 
 	var level = cfg.LoggerOptions.Level

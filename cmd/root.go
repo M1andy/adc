@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	"github.com/sourcegraph/conc"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
@@ -40,7 +39,7 @@ func main(cmd *cobra.Command) {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
-	if err := SetupLogger(); err != nil {
+	if err := SetupLogger(AdcConfig); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -75,17 +74,12 @@ func watchDogMode() {
 		done <- true
 	}()
 
-	var wg conc.WaitGroup
-
 	for {
 		select {
 		case <-done:
 			return
 		case <-ticker.C:
-			wg.Go(func() {
-				StartTasks("watchdog")
-			})
-			wg.Wait()
+			StartTasks("watchdog")
 		}
 	}
 }
