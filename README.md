@@ -9,9 +9,12 @@ Given a folder structure like this:
 ```
 /jav
 ├── jav_download
-│   ├── ipx-177.mp4
-│   └── myed-831.mp4
-└── jav_output
+│   └── ipx-177.mp4
+│       └── any_dir
+│           └── myed-831.mp4
+├── jav_output
+├── adc.exe
+└── config.toml
 ```
 
 ADC will organize the files into the following structure:
@@ -19,16 +22,18 @@ ADC will organize the files into the following structure:
 ```
 /jav
 ├── jav_download
-└── jav_output
-    ├── 五日市芽依
-    │   └── MYED-831
-    │       └── MYED-831.mp4
-    └── 相沢みなみ
-        └── IPX-177
-            └── IPX-177.mp4
+├── jav_output
+│   ├── 五日市芽依
+│   │   └── MYED-831
+│   │       └── MYED-831.mp4
+│   └── 相沢みなみ
+│       └── IPX-177
+│           └── IPX-177.mp4
+├── adc.exe
+└── config.toml
 ```
 
-currently only support crawl from `javbus` and only regular av number like `ipx-177`.
+Currently only support crawl from `javbus` and only regular av number like `ipx-177`.
 
 Organized file structure is like this: `jav_output/actor_name/av_number/av_number.mp4`
 
@@ -36,7 +41,13 @@ Organized file structure is like this: `jav_output/actor_name/av_number/av_numbe
 
 First, you need to specify the source directory and the output directory in the `config.toml` file.
 
-after that, you can run the following command to start the program
+Second, you need place `adc.exe` to any directory you like, `adc.exe` will search `config.toml` from the listed directory.
+
+- /etc/adc/
+- $HOME/.config/adc
+- the same directory with `adc.exe`
+
+After that, you can run the following command to start the program
 
 ```
 # one-time run
