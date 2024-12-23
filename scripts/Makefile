@@ -4,6 +4,8 @@ GIT_COMMIT := $(git rev-parse HEAD)
 
 .PHONY: build
 build:
+	# copy example config.toml
+	cp ./config.toml build/${VERSION}
 	CGO_ENABLED=0 go build \
 		-ldflags="-w -s \
 		-X 'main.Version=${VERSION}' \

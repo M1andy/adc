@@ -36,6 +36,9 @@ function Build-Single {
 
 # build for current platform
 function Build-Current {
+    # copy example config.toml
+    Copy-Item -Path "config.toml" -Destination "build/$Version"
+
     $env:CGO_ENABLED = 0
     go build `
         -ldflags="-w -s -X 'main.Version=$Version' -X 'main.BuildTime=$BuildTime' -X 'main.GitCommit=$GitCommit'" `
@@ -45,6 +48,9 @@ function Build-Current {
 
 # build for all platforms
 function Build-All {
+    # copy example config.toml
+    Copy-Item -Path "config.toml" -Destination "build/$Version"
+
     Build-Single -OS "linux" -ARCH "amd64"
     Build-Single -OS "darwin" -ARCH "amd64"
     Build-Single -OS "windows" -ARCH "amd64" -Extension ".exe"
