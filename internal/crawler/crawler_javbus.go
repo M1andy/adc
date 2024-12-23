@@ -35,11 +35,20 @@ var (
 )
 
 type JavbusCrawler struct {
-	info      *JavInfo
-	collector *colly.Collector
+	info       *JavInfo
+	collector  *colly.Collector
+	isOrganize bool
 }
 
-func NewJavbusCrawler(info *JavInfo) *JavbusCrawler {
+type JavbusOptions func(*JavbusCrawler)
+
+func WithOrganize(isOrganize bool) JavbusOptions {
+	return func(j *JavbusCrawler) {
+		j.isOrganize = isOrganize
+	}
+}
+
+func NewJavbusCrawler(info *JavInfo, opts ...JavbusOptions) *JavbusCrawler {
 	// init default collector
 	collector := newGeneralInfoCollector()
 
@@ -51,7 +60,9 @@ func NewJavbusCrawler(info *JavInfo) *JavbusCrawler {
 		collector: collector,
 	}
 
-	// setup callbacks
+	for _, opt := range opts {
+		opt(crawler)
+	}
 	return crawler
 }
 
@@ -151,7 +162,9 @@ func (c *JavbusCrawler) CrawlAdultVideo() {
 		return
 	}
 
-	organizeJav(c.info)
+	if c.isOrganize {
+		organizeJav(c.info)
+	}
 }
 
 func organizeJav(info *JavInfo) {
