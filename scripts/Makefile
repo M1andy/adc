@@ -1,5 +1,5 @@
 VERSION := $(git describe --tags)
-BUILD_TIME := $(date +%Y-%m-%d_%H:%M:%S)
+BUILD_TIME := $(date +%Y-%m-%d %H:%M:%S)
 GIT_COMMIT := $(git rev-parse HEAD)
 
 .PHONY: build
@@ -8,9 +8,9 @@ build:
 	cp ./config.toml build/${VERSION}
 	CGO_ENABLED=0 go build \
 		-ldflags="-w -s \
-		-X 'main.Version=${VERSION}' \
-		-X 'main.BuildTime=${BUILD_TIME}' \
-		-X 'main.GitCommit=${GIT_COMMIT}'" \
+		-X 'adc/cmd.Version=${VERSION}' \
+		-X 'adc/cmd.BuildTime=${BUILD_TIME}' \
+		-X 'adc/cmd.GitCommit=${GIT_COMMIT}'" \
 		-trimpath \
 		-o build/${VERSION}/adc
 

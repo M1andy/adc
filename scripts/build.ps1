@@ -7,11 +7,11 @@ param(
 
 # get version info
 $Version = $(git describe --tags)
-$BuildTime = $(Get-Date -Format "yyyy-MM-dd_HH:mm:ss")
+$BuildTime = $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 $GitCommit = $(git rev-parse HEAD)
 
 # create output directory
-New-Item -ItemType Directory -Force -Path "build" | OUT-Null
+New-Item -ItemType Directory -Force -Path "build/$Version" | OUT-Null
 
 function Build-Single {
     param (
@@ -29,7 +29,7 @@ function Build-Single {
     Write-Host "Building for $OS/$ARCH..."
     
     go build `
-        -ldflags="-w -s -X 'main.Version=$Version' -X 'main.BuildTime=$BuildTime' -X 'main.GitCommit=$GitCommit'" `
+        -ldflags="-w -s -X 'adc/cmd.Version=$Version' -X 'adc/cmd.BuildTime=$BuildTime' -X 'adc/cmd.GitCommit=$GitCommit'" `
         -trimpath `
         -o $OutputName
 }
@@ -41,7 +41,7 @@ function Build-Current {
 
     $env:CGO_ENABLED = 0
     go build `
-        -ldflags="-w -s -X 'main.Version=$Version' -X 'main.BuildTime=$BuildTime' -X 'main.GitCommit=$GitCommit'" `
+        -ldflags="-w -s -X 'adc/cmd.Version=$Version' -X 'adc/cmd.BuildTime=$BuildTime' -X 'adc/cmd.GitCommit=$GitCommit'" `
         -trimpath `
         -o "build/$Version/adc.exe"
 }

@@ -16,7 +16,12 @@ import (
 	. "adc/internal/logger"
 )
 
-var CfgFilePath string
+var (
+	CfgFilePath string
+	Version     string
+	BuildTime   string
+	GitCommit   string
+)
 
 var rootCmd = &cobra.Command{
 	Use:   "adc",
@@ -35,6 +40,11 @@ func Execute() error {
 }
 
 func main(cmd *cobra.Command) {
+	if getVersion, _ := cmd.Root().PersistentFlags().GetBool("version"); getVersion {
+		fmt.Printf("ADC Version: %s\nBuild Time: %s\nGit Commit: %s\n", Version, BuildTime, GitCommit)
+		os.Exit(0)
+	}
+
 	if err := SetupConfig(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -89,7 +99,10 @@ func init() {
 
 	rootCmd.PersistentFlags().BoolP("watch", "w", false, "whether to enable watch dog mode.")
 	rootCmd.PersistentFlags().StringVarP(&CfgFilePath, "config", "c", "", "config file path (default is ./adc.toml)")
+
+	rootCmd.PersistentFlags().BoolP("version", "v", false, "print version info")
 	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
+	viper.BindPFlag("version", rootCmd.PersistentFlags().Lookup("version"))
 }
 
 func initViper() {
