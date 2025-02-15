@@ -125,9 +125,17 @@ func (c *JavbusCrawler) Init() {
 			case "系列":
 				c.info.Series = value
 			case "類別":
-				c.info.Genre = splitEmptySepStrings(infos[i+1])
+				if i == len(infos)-1 {
+					c.info.Genre = []string{"未知类别"}
+				} else {
+					c.info.Genre = splitEmptySepStrings(infos[i+1])
+				}
 			case "演員":
-				c.info.Actresses = splitEmptySepStrings(infos[i+1])
+				if i == len(infos)-1 {
+					c.info.Genre = []string{"未知演员"}
+				} else {
+					c.info.Actresses = splitEmptySepStrings(infos[i+1])
+				}
 			default:
 				continue
 			}
