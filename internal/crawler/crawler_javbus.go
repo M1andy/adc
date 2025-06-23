@@ -158,7 +158,7 @@ func (c *JavbusCrawler) Init() {
 }
 
 func (c *JavbusCrawler) CrawlAdultVideo() {
-	infoUrl := fmt.Sprintf("https://%s/%s", javbusHomePage, c.info.Number)
+	infoUrl := fmt.Sprintf("https://%s/%s", javbusHomePage, str.ToLower(c.info.Number))
 	err := c.collector.Visit(infoUrl)
 	c.collector.Wait()
 
